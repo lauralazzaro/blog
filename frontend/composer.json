@@ -1,0 +1,19 @@
+{
+    "name": "lauralazzaro/frontend",
+    "description": "frontend",
+    "license": "mit",
+    "autoload": {
+        "psr-4": {
+            "Lauralazzaro\\Frontend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Laura Lazzaro",
+            "email": "lz_laura@hotmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.0"
+    }
+}

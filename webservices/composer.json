@@ -1,0 +1,23 @@
+{
+    "name": "lauralazzaro/webservices",
+    "description": "webservices",
+    "license": "mit",
+    "autoload": {
+        "psr-4": {
+            "LL\\WS\\": "src/",
+            "LL\\WS\\classes\\": "src/classes/",
+            "LL\\WS\\controllers\\": "src/controllers/",
+            "LL\\WS\\models\\": "src/models/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Laura Lazzaro",
+            "email": "lz_laura@hotmail.com"
+        }
+    ],
+    "require": {
+        "altorouter/altorouter": "1.1.0",
+        "monolog/monolog": "^2.3"
+    }
+}

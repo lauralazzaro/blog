@@ -1,0 +1,7 @@
+/webservices/vendor/
+
+/frontend/vendor/
+
+*.idea
+
+/webservices/_settings/
