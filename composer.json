@@ -5,9 +5,10 @@
     "autoload": {
         "psr-4": {
             "LL\\WS\\": "src/",
-            "LL\\WS\\classes\\": "src/classes/",
-            "LL\\WS\\controllers\\": "src/controllers/",
-            "LL\\WS\\models\\": "src/models/"
+            "LL\\WS\\Classes\\": "src/classes/",
+            "LL\\WS\\Controllers\\": "src/controllers/",
+            "LL\\WS\\Models\\": "src/models/",
+            "LL\\WS\\Routes\\": "src/routes/"
         }
     },
     "authors": [
