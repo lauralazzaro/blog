@@ -1,7 +1,4 @@
 /webservices/vendor/
-
-/frontend/vendor/
+/webservices/_settings/
 
 *.idea
-
-/webservices/_settings/
