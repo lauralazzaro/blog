@@ -1,5 +1,4 @@
-vendor/
+/webservices/vendor/
+/webservices/_settings/
 
 *.idea
-
-/_settings/

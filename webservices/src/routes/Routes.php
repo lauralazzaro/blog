@@ -33,7 +33,7 @@ final class Routes
     public static function route()
     {
         self::$router = new \AltoRouter();
-        self::$router->setBasePath('/wsbloglauralazzaro');
+        self::$router->setBasePath('/bloglauralazzaro/webservices');
 
         self::$router->map('GET', '/', function () {
             echo 'home page';
