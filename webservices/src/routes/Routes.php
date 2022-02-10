@@ -2,6 +2,8 @@
 
 namespace LL\WS\Routes;
 
+use LL\WS\Controllers as Ctrl;
+
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 
@@ -33,27 +35,12 @@ final class Routes
     public static function route()
     {
         self::$router = new \AltoRouter();
-        self::$router->setBasePath('/bloglauralazzaro/webservices');
+        self::$router->setBasePath('/bloglauralazzaro/webservices/api/v1');
 
         self::$router->map('GET', '/', function () {
             echo 'home page';
         }, 'home');
 
-        self::$router->map('GET', '/posts/posts', function () {
-            echo 'all posts';
-        }, 'getallposts');
-
-        self::$router->map('GET', '/posts/post/[:id]', function ($id) {
-            echo 'get one post ' . $id;
-        }, 'getonepost');
-
-        self::$router->map('PUT', '/posts/post/[:id]', function ($id) {
-            echo 'update one post ' . $id;
-        }, 'updateonepost');
-
-        self::$router->map('DELETE', '/posts/post/[:id]', function ($id) {
-            echo 'delete one post ' . $id;
-        }, 'deleteonepost');
 
         self::routesPosts();
         self::routesComments();
@@ -69,11 +56,62 @@ final class Routes
         }
     }
 
+    /**
+     * Routes for posts
+     *
+     * @return void
+     * @throws \Exception
+     */
     public static function routesPosts()
-    {}
+    {
+        self::$router->map('POST', '/posts/post/', function () {
+            $pagePosts = new Ctrl\Post();
+            $pagePosts->createPost();
+        }, 'home');
+
+        self::$router->map('GET', '/posts/posts', function () {
+            $pagePosts = new Ctrl\Post();
+            $pagePosts->getAllPost();
+        }, 'getallposts');
+
+        self::$router->map('GET', '/posts/post/[:id]', function ($id) {
+            $pagePosts = new Ctrl\Post();
+            $pagePosts->getOnePost($id);
+        }, 'getonepost');
+
+        self::$router->map('PUT', '/posts/post/[:id]', function ($id) {
+            $pagePosts = new Ctrl\Post();
+            $pagePosts->updateOnePost($id);
+        }, 'updateonepost');
+
+        self::$router->map('DELETE', '/posts/post/[:id]', function ($id) {
+            $pagePosts = new Ctrl\Post();
+            $pagePosts->deleteOnePost($id);
+        }, 'deleteonepost');
+    }
 
     public static function routesComments()
-    {}
+    {
+        self::$router->map('POST', '/comments/comment/', function () {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->createComment();
+        }, 'home');
+
+        self::$router->map('GET', '/comments/comments', function () {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->getAllComment();
+        }, 'getallcomments');
+
+        self::$router->map('PUT', '/comments/comment/[:id]', function ($id) {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->approveOneComment($id);
+        }, 'updateonecomment');
+
+        self::$router->map('DELETE', '/comments/comment/[:id]', function ($id) {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->deleteOneComment($id);
+        }, 'deleteonecomment');
+    }
 
     public static function routesUsers()
     {}
