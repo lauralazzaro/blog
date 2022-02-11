@@ -51,10 +51,8 @@ final class Routes
             call_user_func_array( $match['target'], $match['params'] );
         } else {
             // no route was matched
-            if(isset($_SERVER["SERVER_PROTOCOL"])){
-                $serverProtocol = $_SERVER["SERVER_PROTOCOL"];
+                $serverProtocol = filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_STRING);
                 header(  $serverProtocol . ' 404 Not Found');
-            }
         }
     }
 
@@ -97,7 +95,7 @@ final class Routes
         self::$router->map('POST', '/comments/comment/', function () {
             $pageComments = new Ctrl\Comment();
             $pageComments->createComment();
-        }, 'home');
+        }, 'createcomment');
 
         self::$router->map('GET', '/comments/comments', function () {
             $pageComments = new Ctrl\Comment();
