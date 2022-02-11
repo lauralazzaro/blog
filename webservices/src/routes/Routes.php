@@ -12,24 +12,24 @@ final class Routes
     /**
      * @var Logger
      */
-    private static $logger;
+    private static Logger $logger;
 
     /**
      * @var array
      */
-    public static $settings;
+    public static array $settings;
 
     /**
      * @var \AltoRouter
      */
-    private static $router;
+    private static \AltoRouter $router;
 
 
     public static function init()
     {
         date_default_timezone_set('Europe/Paris');
         self::$logger = new Logger('log');
-        self::$logger->pushHandler(new RotatingFileHandler('../logs/blog-ll-log.log', 10, Logger::DEBUG));
+        self::$logger->pushHandler(new RotatingFileHandler('logs/blog-ll-log.log', 10, Logger::DEBUG));
     }
 
     public static function route()
@@ -43,7 +43,7 @@ final class Routes
 
 
         self::routesPosts();
-        self::routesComments();
+//        self::routesComments();
         self::routesUsers();
 
         $match = self::$router->match();
@@ -64,54 +64,54 @@ final class Routes
      */
     public static function routesPosts()
     {
-        self::$router->map('POST', '/posts/post/', function () {
-            $pagePosts = new Ctrl\Post();
+        self::$router->map('POST', '/posts/post', function () {
+            $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->createPost();
-        }, 'home');
+        }, 'createpost');
 
         self::$router->map('GET', '/posts/posts', function () {
-            $pagePosts = new Ctrl\Post();
+            $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->getAllPost();
         }, 'getallposts');
 
         self::$router->map('GET', '/posts/post/[:id]', function ($id) {
-            $pagePosts = new Ctrl\Post();
+            $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->getOnePost($id);
         }, 'getonepost');
 
         self::$router->map('PUT', '/posts/post/[:id]', function ($id) {
-            $pagePosts = new Ctrl\Post();
+            $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->updateOnePost($id);
         }, 'updateonepost');
 
         self::$router->map('DELETE', '/posts/post/[:id]', function ($id) {
-            $pagePosts = new Ctrl\Post();
+            $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->deleteOnePost($id);
         }, 'deleteonepost');
     }
 
-    public static function routesComments()
-    {
-        self::$router->map('POST', '/comments/comment/', function () {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->createComment();
-        }, 'home');
-
-        self::$router->map('GET', '/comments/comments', function () {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->getAllComment();
-        }, 'getallcomments');
-
-        self::$router->map('PUT', '/comments/comment/[:id]', function ($id) {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->approveOneComment($id);
-        }, 'updateonecomment');
-
-        self::$router->map('DELETE', '/comments/comment/[:id]', function ($id) {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->deleteOneComment($id);
-        }, 'deleteonecomment');
-    }
+//    public static function routesComments()
+//    {
+//        self::$router->map('POST', '/comments/comment/', function () {
+//            $pageComments = new Ctrl\Comment();
+//            $pageComments->createComment();
+//        }, 'home');
+//
+//        self::$router->map('GET', '/comments/comments', function () {
+//            $pageComments = new Ctrl\Comment();
+//            $pageComments->getAllComment();
+//        }, 'getallcomments');
+//
+//        self::$router->map('PUT', '/comments/comment/[:id]', function ($id) {
+//            $pageComments = new Ctrl\Comment();
+//            $pageComments->approveOneComment($id);
+//        }, 'updateonecomment');
+//
+//        self::$router->map('DELETE', '/comments/comment/[:id]', function ($id) {
+//            $pageComments = new Ctrl\Comment();
+//            $pageComments->deleteOneComment($id);
+//        }, 'deleteonecomment');
+//    }
 
     public static function routesUsers()
     {}
