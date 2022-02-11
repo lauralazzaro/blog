@@ -38,12 +38,11 @@ final class Routes
         self::$router->setBasePath('/bloglauralazzaro/webservices/api/v1');
 
         self::$router->map('GET', '/', function () {
-            echo 'home page';
         }, 'home');
 
 
         self::routesPosts();
-//        self::routesComments();
+        self::routesComments();
         self::routesUsers();
 
         $match = self::$router->match();
@@ -52,7 +51,10 @@ final class Routes
             call_user_func_array( $match['target'], $match['params'] );
         } else {
             // no route was matched
-            header( $_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+            if(isset($_SERVER["SERVER_PROTOCOL"])){
+                $serverProtocol = $_SERVER["SERVER_PROTOCOL"];
+                header(  $serverProtocol . ' 404 Not Found');
+            }
         }
     }
 
@@ -74,44 +76,44 @@ final class Routes
             $pagePosts->getAllPost();
         }, 'getallposts');
 
-        self::$router->map('GET', '/posts/post/[:id]', function ($id) {
+        self::$router->map('GET', '/posts/post/[:idPost]', function ($idPost) {
             $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
-            $pagePosts->getOnePost($id);
+            $pagePosts->getOnePost($idPost);
         }, 'getonepost');
 
-        self::$router->map('PUT', '/posts/post/[:id]', function ($id) {
+        self::$router->map('PUT', '/posts/post/[:idPost]', function ($idPost) {
             $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
-            $pagePosts->updateOnePost($id);
+            $pagePosts->updateOnePost($idPost);
         }, 'updateonepost');
 
-        self::$router->map('DELETE', '/posts/post/[:id]', function ($id) {
+        self::$router->map('DELETE', '/posts/post/[:idPost]', function ($idPost) {
             $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
-            $pagePosts->deleteOnePost($id);
+            $pagePosts->deleteOnePost($idPost);
         }, 'deleteonepost');
     }
 
-//    public static function routesComments()
-//    {
-//        self::$router->map('POST', '/comments/comment/', function () {
-//            $pageComments = new Ctrl\Comment();
-//            $pageComments->createComment();
-//        }, 'home');
-//
-//        self::$router->map('GET', '/comments/comments', function () {
-//            $pageComments = new Ctrl\Comment();
-//            $pageComments->getAllComment();
-//        }, 'getallcomments');
-//
-//        self::$router->map('PUT', '/comments/comment/[:id]', function ($id) {
-//            $pageComments = new Ctrl\Comment();
-//            $pageComments->approveOneComment($id);
-//        }, 'updateonecomment');
-//
-//        self::$router->map('DELETE', '/comments/comment/[:id]', function ($id) {
-//            $pageComments = new Ctrl\Comment();
-//            $pageComments->deleteOneComment($id);
-//        }, 'deleteonecomment');
-//    }
+    public static function routesComments()
+    {
+        self::$router->map('POST', '/comments/comment/', function () {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->createComment();
+        }, 'home');
+
+        self::$router->map('GET', '/comments/comments', function () {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->getAllComment();
+        }, 'getallcomments');
+
+        self::$router->map('PUT', '/comments/comment/[:idCmt]', function ($idCmt) {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->approveOneComment($idCmt);
+        }, 'updateonecomment');
+
+        self::$router->map('DELETE', '/comments/comment/[:idCmt]', function ($idCmt) {
+            $pageComments = new Ctrl\Comment();
+            $pageComments->deleteOneComment($idCmt);
+        }, 'deleteonecomment');
+    }
 
     public static function routesUsers()
     {}

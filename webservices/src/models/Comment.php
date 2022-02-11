@@ -6,21 +6,17 @@ class Comment
 {
     public function createComment()
     {
-        echo 'create one comment';
     }
 
     public function getAllComment()
     {
-        echo 'get all comment';
     }
 
-    public function approveOneComment($id)
+    public function approveOneComment($idComment)
     {
-        echo 'update one comment';
     }
 
-    public function deleteOneComment($id)
+    public function deleteOneComment($idComment)
     {
-        echo 'delete one comment';
     }
 }

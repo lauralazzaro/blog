@@ -38,9 +38,7 @@ class Post extends Base
 
         $dbArray = $this->modelPost->selectOnePost($idNewPost);
 
-        $output = json_encode($dbArray);
-
-        echo $output;
+        echo json_encode($dbArray);
     }
 
     /**
@@ -53,36 +51,29 @@ class Post extends Base
 
         $dbArray = $this->modelPost->selectAllPosts();
 
-        $output = json_encode($dbArray);
-
-        echo $output;
-
+        echo json_encode($dbArray);
     }
 
     /**
-     * @param $id
+     * @param $idPost
      * @return void
      * @throws \Exception
      */
-    public function getOnePost($id)
+    public function getOnePost($idPost)
     {
         $this->logger->info('get one post');
 
-        $dbArray = $this->modelPost->selectOnePost($id);
+        $dbArray = $this->modelPost->selectOnePost($idPost);
 
-        $output = json_encode($dbArray);
-
-        echo $output;
+        echo json_encode($dbArray);
     }
 
-    public function updateOnePost($id)
+    public function updateOnePost($idPost)
     {
-        echo 'update one post';
     }
 
-    public function deleteOnePost($id)
+    public function deleteOnePost($idPost)
     {
-        echo 'delete one post';
     }
 
 

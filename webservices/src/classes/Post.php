@@ -7,47 +7,47 @@ final class Post
     /**
      * @var int
      */
-    private $id;
+    private int $idPost;
 
     /**
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * @var string
      */
-    private $lead;
+    private string $lead;
 
     /**
      * @var string
      */
-    private $content;
+    private string $content;
 
     /**
      * @var int
      */
-    private $idAuthor;
+    private int $idAuthor;
 
     /**
      * @var \DateTime
      */
-    private $dtCreated;
+    private \DateTime $createdAt;
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getIdPost(): int
     {
-        return $this->id;
+        return $this->idPost;
     }
 
     /**
-     * @param int $id
+     * @param int $idPost
      */
-    public function setId(int $id): void
+    public function setIdPost(int $idPost): void
     {
-        $this->id = $id;
+        $this->idPost = $idPost;
     }
 
     /**
@@ -117,17 +117,17 @@ final class Post
     /**
      * @return \DateTime
      */
-    public function getDtCreated(): \DateTime
+    public function getCreatedAt(): \DateTime
     {
-        return $this->dtCreated;
+        return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $dtCreated
+     * @param \DateTime $createdAt
      */
-    public function setDtCreated(\DateTime $dtCreated): void
+    public function setCreatedAt(\DateTime $createdAt): void
     {
-        $this->dtCreated = $dtCreated;
+        $this->createdAt = $createdAt;
     }
 
 

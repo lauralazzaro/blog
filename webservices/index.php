@@ -7,9 +7,9 @@ require './vendor/autoload.php';
 $settings = './_settings/settings.php';
 
 if(!file_exists($settings)){
-    die('Please complete the installation');
+    exit('Please complete the installation');
 }
 
-Routes::$settings = require_once('./_settings/settings.php');
+Routes::$settings = require_once './_settings/settings.php';
 Routes::init();
 Routes::route();

@@ -5,24 +5,24 @@ namespace LL\WS\models;
 class Post extends Base
 {
     const SELECT_ALL_POSTS = <<< SQL
-        SELECT pst_pk as id,
+        SELECT pst_pk as idpost,
                pst_usr_pk as userid,
                pst_title as title,
                pst_lead as leadpst,
                pst_content as content,
-               pst_dtc as dtc
+               pst_dtc as created_at
         FROM posts
 SQL;
 
     const SELECT_ONE_POST = <<< SQL
-        SELECT pst_pk as id,
+        SELECT pst_pk as idpost,
                pst_usr_pk as userid,
                pst_title as title,
                pst_lead as leadpst,
                pst_content as content,
-               pst_dtc as dtc
+               pst_dtc as created_at
         FROM posts
-        WHERE pst_pk = :id
+        WHERE pst_pk = :idPost
 SQL;
 
     const INSERT_POST = <<< SQL
@@ -53,11 +53,11 @@ SQL;
 
         $rows = $sql->fetchAll(\PDO::FETCH_ASSOC);
 
-        if($rows){
-            return $rows;
-        } else {
+        if (!$rows) {
             throw new \Exception('No posts found');
         }
+
+        return $rows;
     }
 
     /**
@@ -66,20 +66,20 @@ SQL;
      * @return array
      * @throws \Exception
      */
-    public function selectOnePost(int $id): array
+    public function selectOnePost(int $idPost): array
     {
         $sql = $this->dbConnection->prepare(self::SELECT_ONE_POST);
-        $sql->bindValue(':id', $id);
+        $sql->bindValue(':idPost', $idPost);
 
         $sql->execute();
 
         $row = $sql->fetch(\PDO::FETCH_ASSOC);
 
-        if($row){
-            return $row;
-        } else {
+        if (!$row) {
             throw new \Exception('No post found');
         }
+        return $row;
+
     }
 
     /**
@@ -98,11 +98,12 @@ SQL;
 
         $sql->execute();
 
-        if(!$this->dbConnection->lastInsertId()){
+        if (!$this->dbConnection->lastInsertId()) {
             throw new \Exception('Error while inserting new row');
-        } else {
-            return (int)$this->dbConnection->lastInsertId();
         }
+
+        return (int)$this->dbConnection->lastInsertId();
+
 
     }
 }
