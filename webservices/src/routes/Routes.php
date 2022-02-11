@@ -42,18 +42,17 @@ final class Routes
 
 
         self::routesPosts();
-        self::routesComments();
-        self::routesUsers();
 
         $match = self::$router->match();
 
-        if( is_array($match) && is_callable( $match['target'] ) ) {
-            call_user_func_array( $match['target'], $match['params'] );
-        } else {
-            // no route was matched
-                $serverProtocol = filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_STRING);
-                header(  $serverProtocol . ' 404 Not Found');
+        if( !is_array($match) && !is_callable($match['target'])) {
+
+            $serverProtocol = filter_input(INPUT_SERVER, 'SERVER_PROTOCOL', FILTER_SANITIZE_STRING);
+            header(  $serverProtocol . ' 404 Not Found');
+            return;
         }
+
+        call_user_func_array( $match['target'], $match['params'] );
     }
 
     /**
@@ -89,31 +88,5 @@ final class Routes
             $pagePosts->deleteOnePost($idPost);
         }, 'deleteonepost');
     }
-
-    public static function routesComments()
-    {
-        self::$router->map('POST', '/comments/comment/', function () {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->createComment();
-        }, 'createcomment');
-
-        self::$router->map('GET', '/comments/comments', function () {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->getAllComment();
-        }, 'getallcomments');
-
-        self::$router->map('PUT', '/comments/comment/[:idCmt]', function ($idCmt) {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->approveOneComment($idCmt);
-        }, 'updateonecomment');
-
-        self::$router->map('DELETE', '/comments/comment/[:idCmt]', function ($idCmt) {
-            $pageComments = new Ctrl\Comment();
-            $pageComments->deleteOneComment($idCmt);
-        }, 'deleteonecomment');
-    }
-
-    public static function routesUsers()
-    {}
 
 }
