@@ -5,43 +5,45 @@ namespace LL\WS\models;
 class Post extends Base
 {
     const SELECT_ALL_POSTS = <<< SQL
-        SELECT pst_pk as postid,
-               pst_usr_pk as userid,
-               pst_title as title,
-               pst_lead as leadpst,
-               pst_content as content,
-               pst_created_at as created_at
+        SELECT id,
+               users_id,
+               title,
+               teaser,
+               content,
+               created_at,
+               updated_at
         FROM posts
-        WHERE pst_is_deleted = 0
+        WHERE deleted_at IS NULL
 SQL;
 
     const SELECT_ONE_POST = <<< SQL
-        SELECT pst_pk as postid,
-               pst_usr_pk as userid,
-               pst_title as title,
-               pst_lead as leadpst,
-               pst_content as content,
-               pst_created_at as created_at
+        SELECT id,
+               users_id,
+               title,
+               teaser,
+               content,
+               created_at,
+               updated_at
         FROM posts
         WHERE 
-              pst_pk = :idpost 
+              id = :idpost 
           AND 
-              pst_is_deleted = 0
+              deleted_at IS NULL
 SQL;
 
     const INSERT_POST = <<< SQL
         INSERT INTO posts 
             (
-             pst_usr_pk,
-             pst_title,
-             pst_lead,
-             pst_content
+             users_id,
+             itle,
+             teaser,
+             content
             )
         VALUES 
             (
              :userid,
              :title,
-             :leadpst,
+             :teaser,
              :content
             )
 SQL;
@@ -49,21 +51,21 @@ SQL;
     const UPDATE_POST = <<< SQL
         UPDATE posts 
         SET
-            pst_title = :title,
-            pst_lead = :leadpst,
-            pst_content = :content
+            title = :title,
+            teaser = :teaser,
+            content = :content
         WHERE 
-            pst_pk = :idpost
+            id = :idpost
           AND 
-            pst_is_deleted = 0
+            deleted_at IS NULL
 SQL;
 
     const DELETE_POST = <<< SQL
         UPDATE posts 
         SET
-            pst_is_deleted = 1     
+            deleted_at = CURRENT_TIMESTAMP     
         WHERE 
-            pst_pk = :idpost
+            id = :idpost
 SQL;
     /**
      * @return array
@@ -131,6 +133,7 @@ SQL;
     {
         $sql = $this->dbConnection->prepare(self::UPDATE_POST);
         $sql->bindValue(':idpost', $arrPost['idpost']);
+
         $sql->bindValue(':title', $arrPost['title']);
         $sql->bindValue(':leadpst', $arrPost['leadpst']);
         $sql->bindValue(':content', $arrPost['content']);
