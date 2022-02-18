@@ -38,6 +38,7 @@ final class Routes
         self::$router->setBasePath('/bloglauralazzaro/webservices/api/v1');
 
         self::$router->map('GET', '/', function () {
+            echo ('home');
         }, 'home');
 
 
@@ -78,12 +79,12 @@ final class Routes
             $pagePosts->getOnePost($idPost);
         }, 'getonepost');
 
-        self::$router->map('PUT', '/posts/post/[:idPost]', function ($idPost) {
+        self::$router->map('POST', '/posts/post/[:idPost]/update', function ($idPost) {
             $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->updateOnePost($idPost);
         }, 'updateonepost');
 
-        self::$router->map('DELETE', '/posts/post/[:idPost]', function ($idPost) {
+        self::$router->map('POST', '/posts/post/[:idPost]/delete', function ($idPost) {
             $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->deleteOnePost($idPost);
         }, 'deleteonepost');

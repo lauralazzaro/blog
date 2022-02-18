@@ -70,10 +70,25 @@ class Post extends Base
 
     public function updateOnePost($idPost)
     {
+        $this->logger->info('update one post');
+
+        $arrPost = $this->getBodyRequest(true);
+        $arrPost['idpost'] = $idPost;
+
+        $this->modelPost->updateOnePost($arrPost);
+
+        $dbArray = $this->modelPost->selectOnePost($idPost);
+
+        echo json_encode($dbArray);
     }
 
     public function deleteOnePost($idPost)
     {
+        $this->logger->info('delete one post');
+
+        $dbArray = $this->modelPost->deleteOnePost($idPost);
+
+        echo json_encode(true);
     }
 
 
