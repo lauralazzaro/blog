@@ -1,4 +1,6 @@
 /webservices/vendor/
 /webservices/_settings/
-
+/frontend/vendor/
+/frontend/tmp/
+*/logs/*
 *.idea
