@@ -1,0 +1,17 @@
+{
+  "name": "bloglauralazzaro/frontend",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "lauralazzaro",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "twig/twig": "^3.0",
+    "ext-curl": "*",
+    "twbs/bootstrap": "^5.1"
+  }
+}
