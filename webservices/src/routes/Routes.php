@@ -44,6 +44,7 @@ final class Routes
 
         self::routesPosts();
         self::routesUsers();
+        self::routesComments();
 
         $match = self::$router->match();
 
@@ -102,6 +103,24 @@ final class Routes
             $pagePosts = new Ctrl\User(self::$logger, self::$settings);
             $pagePosts->signup();
         }, 'signup');
+    }
+
+    public static function routesComments()
+    {
+        self::$router->map('POST', '/posts/post/[:postId]/comments', function ($postId) {
+            $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
+            $pageComment->createComment($postId);
+        }, 'createcomment');
+
+        self::$router->map('GET', '/posts/post/[:postId]/comments', function ($postId) {
+            $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
+            $pageComment->selectAllComments($postId);
+        }, 'selectallcomments');
+
+        self::$router->map('PUT', '/posts/post/[:postId]/comments/comment/[:commentId]', function ($postId, $commentId) {
+            $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
+            $pageComment->approveComment($commentId);
+        }, 'approvecomment');
     }
 
 }

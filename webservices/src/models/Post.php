@@ -38,7 +38,7 @@ SQL;
         INSERT INTO posts 
             (
              users_id,
-             itle,
+             title,
              teaser,
              content
             )
