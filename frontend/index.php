@@ -1,14 +1,8 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use Renderer\Renderer;
 
-$loader = new FilesystemLoader(__DIR__ . '/templates');
-$twig = new Environment($loader, [
-//    'cache' => __DIR__ . '/tmp'
-    'cache' => false
-]);
 
 $page = '';
 
@@ -16,15 +10,16 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
-switch ($page) {
+$twigRenderer = new Renderer();
 
+switch ($page) {
     case '':
     case 'home':
-        echo $twig->render('index.twig');
+        $twigRenderer->home();
         break;
     case 'posts':
-        echo $twig->render('posts.twig');
-
+        $twigRenderer->posts();
+        break;
     default:
         echo('page not found');
 }

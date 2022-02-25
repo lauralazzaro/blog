@@ -22,6 +22,6 @@ class Db
 
     private static function getSettings(){
 
-        return include realpath('./_settings/settings.php');
+        return include realpath('../_settings/settings.php');
     }
 }
