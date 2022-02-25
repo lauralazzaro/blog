@@ -24,14 +24,20 @@ class Renderer
 
     public function home()
     {
-        echo $this->twig->render('index.twig');
+        echo $this->twig->render('index.twig', ['title' => 'Laura Lazzaro', 'teaser' => 'Super php developer']);
     }
 
     public function posts()
     {
         $posts = $this->functions->getPosts();
-//        print_r($posts);
 
         echo $this->twig->render('posts.twig', ['posts' => $posts]);
+    }
+
+    public function post($id)
+    {
+        $post = $this->functions->getOnePost($id);
+
+        echo $this->twig->render('post.twig', ['post' => $post]);
     }
 }

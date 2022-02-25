@@ -8,16 +8,14 @@
             <!-- Main Content-->
             {% for post in posts %}
                 <div class="post-preview">
-                    <a href="post?id={{ post.id }}">
+                    <a href="?page=post&postid={{ post.id }}">
                         <h2 class="post-title">
                             {{ post.title }}
                         </h2>
                         <h3 class="post-subtitle"> {{ post.teaser }}</h3>
                     </a>
                     <p class="post-meta">
-                        Posted by
-                        <a href="#!">{{ post.user_id }}</a>
-                        on {{ post.updated_at }}
+                        Posted by {{ post.username }} on {{ post.updated_at  | date('d/m/Y')}}
                     </p>
                 </div>
                 <!-- Divider-->

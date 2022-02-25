@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <div class="container position-relative ">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.teaser }}</h2>
+                    <span class="meta">
+                        Posted by {{ post.username }} on {{ post.created_at | date('d/m/Y') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Post Content-->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <p> {{ post.content }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </article>
+
+{% endblock %}

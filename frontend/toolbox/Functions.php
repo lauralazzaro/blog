@@ -8,6 +8,24 @@ class Functions
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/posts';
 
+        $content = $this->curlPost($url);
+
+        return ($content);
+    }
+
+    public function getOnePost($id)
+    {
+
+        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $id;
+
+        $content = $this->curlPost($url);
+
+        return ($content);
+    }
+
+
+    private function curlPost($url)
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -16,11 +34,10 @@ class Functions
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
 
-        $content = json_decode($response, true);
-
         curl_close($ch);
 
-        return ($content);
-    }
+        $content = json_decode($response, true);
 
+        return $content;
+    }
 }
