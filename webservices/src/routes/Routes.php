@@ -43,6 +43,7 @@ final class Routes
 
 
         self::routesPosts();
+        self::routesUsers();
 
         $match = self::$router->match();
 
@@ -88,6 +89,19 @@ final class Routes
             $pagePosts = new Ctrl\Post(self::$logger, self::$settings);
             $pagePosts->deleteOnePost($idPost);
         }, 'deleteonepost');
+    }
+
+    public static function routesUsers()
+    {
+        self::$router->map('POST', '/users/login', function () {
+            $pagePosts = new Ctrl\User(self::$logger, self::$settings);
+            $pagePosts->login();
+        }, 'login');
+
+        self::$router->map('POST', '/users/signup', function () {
+            $pagePosts = new Ctrl\User(self::$logger, self::$settings);
+            $pagePosts->signup();
+        }, 'signup');
     }
 
 }
