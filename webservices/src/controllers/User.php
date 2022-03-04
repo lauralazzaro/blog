@@ -32,7 +32,7 @@ class User extends Base
         $user->setPassword($body->password);
         $user->setUsername($body->username);
 
-        $idNewPost = $this->modelUser->insertUser($user);
+        $idNewUser = $this->modelUser->insertUser($user);
 
         $dbArray = $this->modelUser->selectUser($user);
 
