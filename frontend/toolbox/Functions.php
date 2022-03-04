@@ -8,7 +8,7 @@ class Functions
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/posts';
 
-        $content = $this->curlPost($url);
+        $content = $this->curlGet($url);
 
         return ($content);
     }
@@ -18,7 +18,7 @@ class Functions
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $id;
 
-        $content = $this->curlPost($url);
+        $content = $this->curlGet($url);
 
         return ($content);
     }
@@ -53,8 +53,17 @@ class Functions
         header('location: ?page=login');
     }
 
+    public function getCommentsForPost($id)
+    {
 
-    private function curlPost($url)
+        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $id .'/comments';
+
+        $content = $this->curlGet($url);
+
+        return ($content);
+    }
+
+    private function curlGet($url)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

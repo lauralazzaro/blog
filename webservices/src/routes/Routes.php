@@ -1,5 +1,4 @@
 <?php
-
 namespace LL\WS\Routes;
 
 use LL\WS\Controllers as Ctrl;
@@ -121,6 +120,18 @@ final class Routes
             $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
             $pageComment->approveComment($commentId);
         }, 'approvecomment');
+
+        self::$router->map('GET', '/posts/post/comments/toapprove', function () {
+            $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
+            $pageComment->selectCommentsToApprove();
+        }, 'selectcommentstoapprove');
+
+        self::$router->map('DELETE', '/posts/post/comments/comment/[:commentId]', function ($commentId) {
+            $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
+            $pageComment->refuseComment($commentId);
+        }, 'refusecomment');
     }
+
+
 
 }

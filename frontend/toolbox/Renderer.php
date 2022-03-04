@@ -35,11 +35,12 @@ class Renderer
         echo $this->twig->render('posts.twig', ['posts' => $posts]);
     }
 
-    public function post($id)
+    public function post($postid)
     {
-        $post = $this->functions->getOnePost($id);
+        $post = $this->functions->getOnePost($postid);
+        $comments = $this->functions->getCommentsForPost($postid);
 
-        echo $this->twig->render('post.twig', ['post' => $post]);
+        echo $this->twig->render('post.twig', ['post' => $post, 'comments' => $comments]);
     }
 
     public function login()

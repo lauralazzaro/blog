@@ -27,6 +27,27 @@ SQL;
         VALUES (:userid, :postid, :content)
 SQL;
 
+    const SELECT_COMMENTS_TO_APPROVE = <<< SQL
+        SELECT comments.id,
+               comments.content,
+               comments.updated_at,
+               user.username,
+               post.title 
+        FROM comments
+        INNER JOIN users user on comments.users_id = user.id
+        INNER JOIN posts post on comments.posts_id = post.id
+        WHERE comments.approved = 0
+        AND
+              comments.deleted_at is null
+SQL;
+
+    const REFUSE_COMMENT = <<< SQL
+        UPDATE comments
+        SET deleted_at = current_timestamp
+        WHERE id = :commentid 
+SQL;
+
+
     /**
      * @param int $postId
      * @return array
@@ -37,6 +58,21 @@ SQL;
         $sql = $this->dbConnection->prepare(self::SELECT_ALL_COMMENTS);
 
         $sql->bindValue(':postid', $postId);
+
+        $sql->execute();
+
+        $rows = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+        if (!$rows) {
+            throw new \Exception('No comments found');
+        }
+
+        return $rows;
+    }
+
+    public function selectCommentsToApprove(): array
+    {
+        $sql = $this->dbConnection->prepare(self::SELECT_COMMENTS_TO_APPROVE);
 
         $sql->execute();
 
@@ -78,7 +114,30 @@ SQL;
      */
     public function approveComment(int $commentId): bool
     {
+        // @todo approve seulement si user admin
         $sql = $this->dbConnection->prepare(self::APPROVE_COMMENT);
+        $sql->bindValue(':commentid', $commentId);
+
+        $sql->execute();
+
+        $updateSucceded = $sql->rowCount();
+
+        if ($updateSucceded === 0) {
+            throw new \Exception('No post updated');
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $commentId
+     * @return bool
+     * @throws \Exception
+     */
+    public function refuseComment(int $commentId): bool
+    {
+        // @todo approve seulement si user admin
+        $sql = $this->dbConnection->prepare(self::REFUSE_COMMENT);
         $sql->bindValue(':commentid', $commentId);
 
         $sql->execute();

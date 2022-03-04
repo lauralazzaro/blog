@@ -62,4 +62,31 @@ class Comment extends Base
 
         echo json_encode($dbArray);
     }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function selectCommentsToApprove()
+    {
+        $this->logger->info('select comments to approve');
+
+        $dbArray = $this->modelComment->selectCommentsToApprove();
+
+        echo json_encode($dbArray);
+    }
+
+    /**
+     * @param $commentId
+     * @return void
+     * @throws \Exception
+     */
+    public function refuseComment($commentId)
+    {
+        $this->logger->info('select comments to approve');
+
+        $dbArray = $this->modelComment->refuseComment($commentId);
+
+        echo json_encode($dbArray);
+    }
 }
