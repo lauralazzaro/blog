@@ -44,7 +44,25 @@ switch ($query_array['page']) {
         break;
     case 'logout':
         $_SESSION['connected'] = false;
+        $_SESSION['role'] = '';
         header('location: ?page=home');
+        break;
+    case 'admin':
+        $twigRenderer->adminPage();
+        break;
+    case 'approvecomment':
+        $commentId = $query_array['commentid'];
+        $function->approveComment($commentId);
+        header('location: ?page=admin');
+        break;
+    case 'deletecomment':
+        $commentId = $query_array['commentid'];
+        $function->deleteComment($commentId);
+        header('location: ?page=admin');
+        break;
+    case 'addcomment':
+        $comment = $_POST;
+        $function->addComment($comment);
         break;
     default:
         echo('page not found');

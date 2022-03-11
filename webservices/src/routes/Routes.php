@@ -116,7 +116,7 @@ final class Routes
             $pageComment->selectAllComments($postId);
         }, 'selectallcomments');
 
-        self::$router->map('PUT', '/posts/post/[:postId]/comments/comment/[:commentId]', function ($postId, $commentId) {
+        self::$router->map('PUT', '/posts/post/comments/comment/[:commentId]', function ($commentId) {
             $pageComment = new Ctrl\Comment(self::$logger, self::$settings);
             $pageComment->approveComment($commentId);
         }, 'approvecomment');
