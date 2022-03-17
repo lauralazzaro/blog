@@ -9,12 +9,14 @@ class Post extends Base
 {
 
     private mdl\Post $modelPost;
+    private User $ctrlUser;
 
     public function __construct($logger, $config)
     {
         parent::__construct($logger, $config);
 
         $this->modelPost = new \LL\WS\models\Post($this->logger);
+        $this->ctrlUser = new User($this->logger, $config);
     }
 
     /**
@@ -26,6 +28,10 @@ class Post extends Base
         $this->logger->info('create post');
 
         $body = $this->getBodyRequest();
+
+        $userId = $this->validateToken($body->token);
+
+        $this->ctrlUser->isAdmin($userId);
 
         $post = new cls\Post();
 
@@ -73,6 +79,11 @@ class Post extends Base
         $this->logger->info('update one post');
 
         $arrPost = $this->getBodyRequest(true);
+
+        $userId = $this->validateToken($arrPost['token']);
+
+        $this->ctrlUser->isAdmin($userId);
+
         $arrPost['idpost'] = $idPost;
 
         $this->modelPost->updateOnePost($arrPost);
@@ -86,7 +97,13 @@ class Post extends Base
     {
         $this->logger->info('delete one post');
 
-        $dbArray = $this->modelPost->deleteOnePost($idPost);
+        $body = $this->getBodyRequest();
+
+        $userId = $this->validateToken($body->token);
+
+        $this->ctrlUser->isAdmin($userId);
+
+        $this->modelPost->deleteOnePost($idPost);
 
         echo json_encode(true);
     }

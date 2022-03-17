@@ -7,12 +7,14 @@ use LL\WS\classes as cls;
 class Comment extends Base
 {
     private mdl\Comment $modelComment;
+    private User $ctrlUser;
 
     public function __construct($logger, $config)
     {
         parent::__construct($logger, $config);
 
         $this->modelComment = new \LL\WS\models\Comment($this->logger);
+        $this->ctrlUser = new User($this->logger, $config);
     }
 
     /**
@@ -24,6 +26,10 @@ class Comment extends Base
         $this->logger->info('create comment');
 
         $body = $this->getBodyRequest();
+
+        $userId = $this->validateToken($body->token);
+
+        $this->ctrlUser->isAdmin($userId);
 
         $comment = new cls\Comment();
         $comment->setPostId($postId);
@@ -43,6 +49,13 @@ class Comment extends Base
     public function approveComment($commentId)
     {
         $this->logger->info('approve comment');
+
+        $body = $this->getBodyRequest();
+
+        $userId = $this->validateToken($body->token);
+
+        $this->ctrlUser->isAdmin($userId);
+
 
         $this->modelComment->approveComment($commentId);
 
@@ -70,6 +83,11 @@ class Comment extends Base
     public function selectCommentsToApprove()
     {
         $this->logger->info('select comments to approve');
+        $body = $this->getBodyRequest();
+
+        $userId = $this->validateToken($body->token);
+
+        $this->ctrlUser->isAdmin($userId);
 
         $dbArray = $this->modelComment->selectCommentsToApprove();
 
@@ -84,6 +102,12 @@ class Comment extends Base
     public function refuseComment($commentId)
     {
         $this->logger->info('select comments to approve');
+
+        $body = $this->getBodyRequest();
+
+        $userId = $this->validateToken($body->token);
+
+        $this->ctrlUser->isAdmin($userId);
 
         $dbArray = $this->modelComment->refuseComment($commentId);
 

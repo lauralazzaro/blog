@@ -15,6 +15,12 @@ SQL;
         WHERE email = :email AND password = :password
 SQL;
 
+    const SELECT_USER_BY_ID = <<< SQL
+        SELECT role
+        FROM users
+        WHERE id = :id
+SQL;
+
     /**
      * @param \LL\WS\classes\User $user
      * @return int
@@ -31,7 +37,7 @@ SQL;
         $sql->execute();
 
         if (!$this->dbConnection->lastInsertId()) {
-            throw new \Exception('Error while inserting new row');
+            throw new \Exception('500.Error while inserting new row');
         }
 
         return (int)$this->dbConnection->lastInsertId();
@@ -54,7 +60,28 @@ SQL;
         $row = $sql->fetch(\PDO::FETCH_ASSOC);
 
         if (!$row) {
-            throw new \Exception('Email or password error');
+            throw new \Exception('401.Email or password error');
+        }
+        return $row;
+    }
+
+    /**
+     * @param \LL\WS\classes\User $user
+     * @return array
+     * @throws \Exception
+     */
+    public function selectUserById($userId): array
+    {
+        $sql = $this->dbConnection->prepare(self::SELECT_USER_BY_ID);
+
+        $sql->bindValue(':id', $userId);
+
+        $sql->execute();
+
+        $row = $sql->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            throw new \Exception('401.User not found');
         }
         return $row;
     }

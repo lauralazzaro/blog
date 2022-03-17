@@ -32,7 +32,7 @@ class User extends Base
         $user->setPassword($body->password);
         $user->setUsername($body->username);
 
-        $idNewUser = $this->modelUser->insertUser($user);
+        $this->modelUser->insertUser($user);
 
         $dbArray = $this->modelUser->selectUser($user);
 
@@ -56,6 +56,22 @@ class User extends Base
 
         $dbArray = $this->modelUser->selectUser($user);
 
+        $token = $this->genererateToken($dbArray);
+        $dbArray['token'] = $token;
+
         echo json_encode($dbArray);
+    }
+
+    public function isAdmin($userId)
+    {
+        $this->logger->info('check if admin');
+
+        $role = $this->modelUser->selectUserById($userId);
+
+        if($role['role'] === 'user'){
+            throw new \Exception('403.User not authorized');
+        }
+
+        return true;
     }
 }
