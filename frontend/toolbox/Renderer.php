@@ -48,6 +48,7 @@ class Renderer
 
     public function login()
     {
+
         echo $this->twig->render('login.twig');
     }
 
