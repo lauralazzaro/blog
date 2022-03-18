@@ -21,6 +21,7 @@
     "altorouter/altorouter": "1.1.0",
     "monolog/monolog": "^2.3",
     "rbdwllr/reallysimplejwt": "^4.0",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-curl": "*"
   }
 }

@@ -27,9 +27,7 @@ class Comment extends Base
 
         $body = $this->getBodyRequest();
 
-        $userId = $this->validateToken($body->token);
-
-        $this->ctrlUser->isAdmin($userId);
+        $this->validateToken($body->token);
 
         $comment = new cls\Comment();
         $comment->setPostId($postId);

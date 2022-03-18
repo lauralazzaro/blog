@@ -55,7 +55,6 @@ abstract class Base
         $payload = $parsed->getPayload();
 
         return (int)$payload['user_id'];
-
     }
 
 

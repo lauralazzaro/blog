@@ -34,9 +34,7 @@ class User extends Base
 
         $this->modelUser->insertUser($user);
 
-        $dbArray = $this->modelUser->selectUser($user);
-
-        echo json_encode($dbArray);
+        echo true;
     }
 
     /**
