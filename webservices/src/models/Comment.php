@@ -114,7 +114,6 @@ SQL;
      */
     public function approveComment(int $commentId): bool
     {
-        // @todo approve seulement si user admin
         $sql = $this->dbConnection->prepare(self::APPROVE_COMMENT);
         $sql->bindValue(':commentid', $commentId);
 
@@ -136,7 +135,6 @@ SQL;
      */
     public function refuseComment(int $commentId): bool
     {
-        // @todo approve seulement si user admin
         $sql = $this->dbConnection->prepare(self::REFUSE_COMMENT);
         $sql->bindValue(':commentid', $commentId);
 

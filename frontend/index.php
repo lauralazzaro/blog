@@ -6,7 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Toolbox\Functions;
 use Toolbox\Renderer;
 
-parse_str($_SERVER["QUERY_STRING"], $query_array);
+parse_str(filter_input(INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_STRING), $query_array);
 
 if (!isset($query_array['page'])) {
     $query_array['page'] = '';
@@ -31,15 +31,14 @@ switch ($query_array['page']) {
         $twigRenderer->login();
         break;
     case 'sendlogin':
-        $post = $_POST;
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $function->login($post);
         break;
     case 'sendsignup':
-        $post = $_POST;
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $function->signup($post);
         break;
     case 'signup':
-        $post = $_POST;
         $twigRenderer->signup();
         break;
     case 'logout':

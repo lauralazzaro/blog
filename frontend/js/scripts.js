@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
             if (currentTop > 0 && mainNav.classList.contains("is-fixed")) {
                 mainNav.classList.add("is-visible");
             } else {
-                mainNav.classList.remove('is-visible', 'is-fixed');
+                mainNav.classList.remove("is-visible", "is-fixed");
             }
         } else {
             // Scrolling Down
@@ -25,4 +25,4 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         scrollPos = currentTop;
     });
-})
+});
