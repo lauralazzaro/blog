@@ -1,4 +1,5 @@
 <?php
+
 namespace Toolbox;
 
 use Twig\Environment;
@@ -7,9 +8,9 @@ use Twig\Loader\FilesystemLoader;
 
 class Renderer
 {
-    private $twig;
-    private $functions;
-    private $role;
+    private Environment $twig;
+    private Functions $functions;
+    private string $role;
 
     public function __construct()
     {
@@ -23,7 +24,6 @@ class Renderer
 
         $this->functions = new Functions();
         $this->checkRole();
-
     }
 
     public function home()
@@ -59,20 +59,20 @@ class Renderer
 
     public function adminPage()
     {
-        if($this->role === 'admin') {
-            $comments = $this->functions->getCommentsToApprove();
-            echo $this->twig->render('adminpage.twig', ['comments' => $comments, 'role' => $this->role]);
-        } else {
+        if ($this->role !== 'admin') {
             header('location: ?page=home');
         }
+
+        $comments = $this->functions->getCommentsToApprove();
+        echo $this->twig->render('adminpage.twig', ['comments' => $comments, 'role' => $this->role]);
     }
 
     private function checkRole()
     {
-        if(filter_var($_SESSION['role'])){
+        $this->role = '';
+
+        if (isset($_SESSION['role'])) {
             $this->role = filter_var($_SESSION['role']);
-        } else {
-            $this->role = '';
         }
     }
 }

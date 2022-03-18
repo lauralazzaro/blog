@@ -56,7 +56,6 @@ class Comment extends Base
 
         $this->ctrlUser->isAdmin($userId);
 
-
         $this->modelComment->approveComment($commentId);
 
         echo true;

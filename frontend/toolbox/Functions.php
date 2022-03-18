@@ -8,24 +8,23 @@ class Functions
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/posts';
 
-        $content = $this->curlGet($url);
+        $content = $this->curlGet($url, []);
 
         return ($content);
     }
 
-    public function getOnePost($id)
+    public function getOnePost($postId)
     {
 
-        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $id;
+        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $postId;
 
-        $content = $this->curlGet($url);
+        $content = $this->curlGet($url, []);
 
         return ($content);
     }
 
     public function login($form)
     {
-
         $form = json_encode($form);
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/users/login';
@@ -34,6 +33,7 @@ class Functions
 
         $_SESSION['role'] = $content['role'];
         $_SESSION['iduser'] = $content['id'];
+        $_SESSION['token'] = $content['token'];
         $_SESSION['connected'] = true;
 
         header('location: ?page=home');
@@ -50,17 +50,18 @@ class Functions
 
         $_SESSION['role'] = $content['role'];
         $_SESSION['iduser'] = $content['id'];
+        $_SESSION['token'] = $content['token'];
         $_SESSION['connected'] = true;
 
         header('location: ?page=login');
     }
 
-    public function getCommentsForPost($id)
+    public function getCommentsForPost($postId)
     {
 
-        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $id .'/comments';
+        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $postId .'/comments';
 
-        $content = $this->curlGet($url);
+        $content = $this->curlGet($url, []);
 
         return ($content);
     }
@@ -69,7 +70,10 @@ class Functions
     {
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/comments/toapprove';
 
-        $content = $this->curlGet($url);
+        $body = [
+            'token' => $_SESSION['token']
+            ];
+        $content = $this->curlGet($url, $body);
 
         return ($content);
     }
@@ -78,7 +82,7 @@ class Functions
     {
         $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/comments/comment/$commentId";
 
-        $this->curlPut($url, []);
+        $this->curlPut($url, ['token' => $_SESSION['token']]);
 
         header('location: ?page=adminpage');
     }
@@ -109,17 +113,18 @@ class Functions
 
     }
 
-    private function curlGet($url)
+    private function curlGet($url, $data)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
-
-        curl_close($ch);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'GET' );
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        $response = curl_exec($curl);
+        curl_close($curl);
 
         $content = json_decode($response, true);
 
@@ -128,18 +133,18 @@ class Functions
 
     private function curlForm($url, $body)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,     $body);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: application/json'));
-        $response = curl_exec($ch);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HEADER, FALSE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS,     $body);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_HTTPHEADER,     array('Content-Type: application/json'));
+        $response = curl_exec($curl);
 
-        curl_close($ch);
+        curl_close($curl);
 
         $content = json_decode($response, true);
 
@@ -148,13 +153,13 @@ class Functions
 
     private function curlPut($url, $data)
     {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
-        $response = curl_exec($ch);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($curl, CURLOPT_POSTFIELDS,http_build_query($data));
+        $response = curl_exec($curl);
 
-        curl_close($ch);
+        curl_close($curl);
 
         $content = json_decode($response, true);
 
@@ -163,12 +168,12 @@ class Functions
 
     private function curlDelete($url)
     {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        $response = curl_exec($ch);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+        $response = curl_exec($curl);
 
-        curl_close($ch);
+        curl_close($curl);
 
         $content = json_decode($response, true);
 

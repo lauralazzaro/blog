@@ -1,25 +1,26 @@
 {
-    "name": "lauralazzaro/webservices",
-    "description": "webservices",
-    "license": "mit",
-    "autoload": {
-        "psr-4": {
-            "LL\\WS\\": "src/",
-            "LL\\WS\\Classes\\": "src/classes/",
-            "LL\\WS\\Controllers\\": "src/controllers/",
-            "LL\\WS\\Models\\": "src/models/",
-            "LL\\WS\\Routes\\": "src/routes/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Laura Lazzaro",
-            "email": "lz_laura@hotmail.com"
-        }
-    ],
-    "require": {
-        "altorouter/altorouter": "1.1.0",
-        "monolog/monolog": "^2.3",
-        "rbdwllr/reallysimplejwt": "^4.0"
+  "name": "lauralazzaro/webservices",
+  "description": "webservices",
+  "license": "mit",
+  "autoload": {
+    "psr-4": {
+      "LL\\WS\\": "src/",
+      "LL\\WS\\Classes\\": "src/classes/",
+      "LL\\WS\\Controllers\\": "src/controllers/",
+      "LL\\WS\\Models\\": "src/models/",
+      "LL\\WS\\Routes\\": "src/routes/"
     }
+  },
+  "authors": [
+    {
+      "name": "Laura Lazzaro",
+      "email": "lz_laura@hotmail.com"
+    }
+  ],
+  "require": {
+    "altorouter/altorouter": "1.1.0",
+    "monolog/monolog": "^2.3",
+    "rbdwllr/reallysimplejwt": "^4.0",
+    "ext-pdo": "*"
+  }
 }
