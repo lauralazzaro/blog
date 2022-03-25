@@ -120,6 +120,18 @@ class Functions
         header("location: ?page=post&postid=$postId");
     }
 
+    public function deletePost($postId)
+    {
+        $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/$postId/delete";
+        $body = [
+            'token' => $this->session->getSession('token')
+        ];
+
+        $this->curl($url, $body, 'DELETE');
+
+        header('location: ?page=posts');
+    }
+
     private function curlForm($url, $body)
     {
         $curl = curl_init();

@@ -60,8 +60,12 @@ switch ($query_array['page']) {
         header('location: ?page=admin');
         break;
     case 'addcomment':
-        $comment = $_POST;
+        $comment = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $function->addComment($comment);
+        break;
+    case 'deletepost':
+        $postId = $query_array['postid'];
+        $function->deletePost($postId);
         break;
     default:
         echo('page not found');
