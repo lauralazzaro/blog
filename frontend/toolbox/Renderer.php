@@ -10,6 +10,7 @@ class Renderer
 {
     private Environment $twig;
     private Functions $functions;
+    private Session $session;
     private string $role;
 
     public function __construct()
@@ -22,6 +23,7 @@ class Renderer
 
         $this->twig->addGlobal('session', $_SESSION);
 
+        $this->session = new Session();
         $this->functions = new Functions();
         $this->checkRole();
     }
@@ -43,7 +45,7 @@ class Renderer
         $post = $this->functions->getOnePost($postid);
         $comments = $this->functions->getCommentsForPost($postid);
 
-        echo $this->twig->render('post.twig', ['post' => $post, 'comments' => $comments, 'role' => $this->role]);
+        echo $this->twig->render('post.twig', ['post' => $post, 'comments' => $comments, 'role' => $this->role, 'connected' => $this->session->getSession('connected')]);
     }
 
     public function login()
@@ -71,8 +73,8 @@ class Renderer
     {
         $this->role = '';
 
-        if (isset($_SESSION['role'])) {
-            $this->role = filter_var($_SESSION['role']);
+        if($this->session->getSession('role')) {
+            $this->role = $this->session->getSession('role');
         }
     }
 }

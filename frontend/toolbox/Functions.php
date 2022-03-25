@@ -4,6 +4,13 @@ namespace Toolbox;
 
 class Functions
 {
+    private Session $session;
+
+    public function __construct()
+    {
+        $this->session = new Session();
+    }
+
     public function getPosts()
     {
 
@@ -32,10 +39,10 @@ class Functions
 
         $content = $this->curlForm($url, $form);
 
-        $_SESSION['role'] = $content['role'];
-        $_SESSION['iduser'] = $content['id'];
-        $_SESSION['token'] = $content['token'];
-        $_SESSION['connected'] = true;
+        $this->session->setSession('role', $content['role']);
+        $this->session->setSession('iduser', $content['id']);
+        $this->session->setSession('token', $content['token']);
+        $this->session->setSession('connected', true);
 
         header('location: ?page=home');
     }
@@ -65,9 +72,8 @@ class Functions
     public function getCommentsToApprove()
     {
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/comments/toapprove';
-
         $body = [
-            'token' => $_SESSION['token']
+            'token' => $this->session->getSession('token')
         ];
 
         $content = $this->curl($url, $body, 'GET');
@@ -78,9 +84,8 @@ class Functions
     public function approveComment($commentId)
     {
         $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/comments/comment/$commentId";
-
         $body = [
-            'token' => $_SESSION['token']
+            'token' => $this->session->getSession('token')
         ];
 
         $this->curl($url, $body, 'PUT');
@@ -92,7 +97,7 @@ class Functions
     {
         $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/comments/comment/$commentId";
         $body = [
-            'token' => $_SESSION['token']
+            'token' => $this->session->getSession('token')
         ];
 
         $this->curl($url, $body, 'DELETE');
@@ -105,7 +110,7 @@ class Functions
         $postId = $comment['postid'];
         unset($comment['postid']);
 
-        $comment['token'] = $_SESSION['token'];
+        $comment['token'] = $this->session->getSession('token');
         $comment = json_encode($comment);
 
         $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/$postId/comments";
