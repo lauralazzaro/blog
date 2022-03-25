@@ -6,7 +6,6 @@ use Monolog\Logger;
 
 abstract class Base
 {
-
     protected Logger $logger;
     protected \PDO $dbConnection;
 
@@ -18,9 +17,8 @@ abstract class Base
 
     protected function dbConnection(): \PDO
     {
-        Db::connection();
-        return Db::$dbConnection;
+        $database = new Db();
+
+        return $database->connection();
     }
-
-
 }

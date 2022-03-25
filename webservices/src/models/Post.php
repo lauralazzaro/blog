@@ -5,28 +5,31 @@ namespace LL\WS\models;
 class Post extends Base
 {
     const SELECT_ALL_POSTS = <<< SQL
-        SELECT id,
-               users_id,
-               title,
-               teaser,
-               content,
-               created_at,
-               updated_at
+        SELECT posts.id,
+               posts.title,
+               posts.teaser,
+               posts.content,
+               posts.created_at,
+               posts.updated_at,
+               user.username
         FROM posts
+        INNER JOIN users user on posts.users_id = user.id
         WHERE deleted_at IS NULL
 SQL;
 
     const SELECT_ONE_POST = <<< SQL
-        SELECT id,
-               users_id,
-               title,
-               teaser,
-               content,
-               created_at,
-               updated_at
+        SELECT posts.id,
+               posts.users_id,
+               posts.title,
+               posts.teaser,
+               posts.content,
+               posts.created_at,
+               posts.updated_at,
+               user.username
         FROM posts
+        INNER JOIN users user on posts.users_id = user.id
         WHERE 
-              id = :idpost 
+              posts.id = :idpost 
           AND 
               deleted_at IS NULL
 SQL;
@@ -35,7 +38,7 @@ SQL;
         INSERT INTO posts 
             (
              users_id,
-             itle,
+             title,
              teaser,
              content
             )

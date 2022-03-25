@@ -4,3 +4,4 @@
 /frontend/tmp/
 */logs/*
 *.idea
+*settings*

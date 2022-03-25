@@ -1,0 +1,64 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <div class="container position-relative ">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.teaser }}</h2>
+                    <span class="meta">
+                        Posted by {{ post.username }} on {{ post.updated_at | date('d/m/Y') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Post Content-->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <p> {{ post.content }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </article>
+
+
+
+    <div class="container position-relative mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+
+                <form action="?page=addcomment" method="post" class="mb-5">
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Add a comment:</label>
+                        <input type="text" class="form-control" name="content" id="content" aria-describedby="">
+                    </div>
+                    <input type="hidden" class="form-control" name="userid" id="userid" value="{{ session.iduser }}">
+                    <input type="hidden" class="form-control" name="postid" id="postid" value="{{ post.id }}">
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-2"> Comments: </h5>
+                </div>
+                <div class="list-group">
+                    {% for comment in comments %}
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"> {{ comment.username }} </h5>
+                                <small> commented on {{ comment.updated_at | date('d/m/Y') }}</small>
+                            </div>
+                            <p class="mb-1">{{ comment.content }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,30 +1,68 @@
 <?php
+session_start();
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
-$loader = new FilesystemLoader(__DIR__ . '/templates');
-$twig = new Environment($loader, [
-//    'cache' => __DIR__ . '/tmp'
-    'cache' => false
-]);
+use Toolbox\Functions;
+use Toolbox\Renderer;
 
-$page = '';
+parse_str(filter_input(INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_STRING), $query_array);
 
-if (isset($_GET['page'])) {
-    $page = $_GET['page'];
+if (!isset($query_array['page'])) {
+    $query_array['page'] = '';
 }
 
-switch ($page) {
+$twigRenderer = new Renderer();
+$function = new Functions();
 
+switch ($query_array['page']) {
     case '':
     case 'home':
-        echo $twig->render('index.twig');
+        $twigRenderer->home();
         break;
     case 'posts':
-        echo $twig->render('posts.twig');
-
+        $twigRenderer->posts();
+        break;
+    case 'post':
+        $id = $query_array['postid'];
+        $twigRenderer->post($id);
+        break;
+    case 'login':
+        $twigRenderer->login();
+        break;
+    case 'sendlogin':
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $function->login($post);
+        break;
+    case 'sendsignup':
+        $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $function->signup($post);
+        break;
+    case 'signup':
+        $twigRenderer->signup();
+        break;
+    case 'logout':
+        $_SESSION['connected'] = false;
+        $_SESSION['role'] = '';
+        header('location: ?page=home');
+        break;
+    case 'admin':
+        $twigRenderer->adminPage();
+        break;
+    case 'approvecomment':
+        $commentId = $query_array['commentid'];
+        $function->approveComment($commentId);
+        header('location: ?page=admin');
+        break;
+    case 'deletecomment':
+        $commentId = $query_array['commentid'];
+        $function->deleteComment($commentId);
+        header('location: ?page=admin');
+        break;
+    case 'addcomment':
+        $comment = $_POST;
+        $function->addComment($comment);
+        break;
     default:
         echo('page not found');
 }

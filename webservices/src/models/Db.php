@@ -4,10 +4,7 @@ namespace LL\WS\Models;
 
 class Db
 {
-
-    public static \PDO $dbConnection;
-
-    public static function connection()
+    public function connection(): \PDO
     {
         $config = self::getSettings();
 
@@ -17,11 +14,11 @@ class Db
         $dbuser = $config['db']['dbuser'];
         $dbpassword = $config['db']['dbpassword'];
 
-        self::$dbConnection = new \PDO("mysql:host=$dbhost;dbname=$dbname;charset=utf8;port=$dbport",$dbuser,$dbpassword, []);
+        return new \PDO("mysql:host=$dbhost;dbname=$dbname;charset=utf8;port=$dbport",$dbuser,$dbpassword, []);
     }
 
     private static function getSettings(){
 
-        return include realpath('./_settings/settings.php');
+        return include realpath('../_settings/settings.php');
     }
 }
