@@ -135,10 +135,10 @@ SQL;
     public function updateOnePost(array $arrPost): bool
     {
         $sql = $this->dbConnection->prepare(self::UPDATE_POST);
+        
         $sql->bindValue(':idpost', $arrPost['idpost']);
-
         $sql->bindValue(':title', $arrPost['title']);
-        $sql->bindValue(':leadpst', $arrPost['leadpst']);
+        $sql->bindValue(':teaser', $arrPost['teaser']);
         $sql->bindValue(':content', $arrPost['content']);
 
         $sql->execute();

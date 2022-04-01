@@ -33,11 +33,12 @@ class Functions
 
     public function updatePost($postId, $form)
     {
-        $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/$postId/update";
-        $form['token'] =  $this->session->getSession('token');
+        $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/' . $postId . '/update';
+        $form['token'] = $this->session->getSession('token');
+        $form['idpost'] = $postId;
 
-        $form = json_encode($form);
-        $this->curl($url, $form, 'PUT');
+        $body = json_encode($form);
+        $this->curlForm($url, $body, 'PUT');
 
         header("location: ?page=updatepost&postid=$postId");
     }
@@ -48,7 +49,7 @@ class Functions
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/users/login';
 
-        $content = $this->curlForm($url, $form);
+        $content = $this->curlForm($url, $form, 'POST');
 
         $this->session->setSession('role', $content['role']);
         $this->session->setSession('iduser', $content['id']);
@@ -65,7 +66,7 @@ class Functions
 
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/users/signup';
 
-        $this->curlForm($url, $form);
+        $this->curlForm($url, $form, 'POST');
 
         header('location: ?page=login');
     }
@@ -138,7 +139,7 @@ class Functions
 
         $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/$postId/comments";
 
-        $this->curlForm($url, $comment);
+        $this->curlForm($url, $comment, 'POST');
 
         header("location: ?page=post&postid=$postId");
     }
@@ -155,14 +156,14 @@ class Functions
         header('location: ?page=posts');
     }
 
-    private function curlForm($url, $body)
+    private function curlForm($url, $body, $method)
     {
         $curl = curl_init();
 
         $options = array(
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_POST => 1,
+            CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_HEADER => FALSE,
             CURLOPT_POSTFIELDS => $body,
             CURLOPT_SSL_VERIFYHOST => false,
