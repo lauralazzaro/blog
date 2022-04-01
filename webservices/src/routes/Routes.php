@@ -102,6 +102,11 @@ final class Routes
             $pagePosts = new Ctrl\User(self::$logger, self::$settings);
             $pagePosts->signup();
         }, 'signup');
+
+        self::$router->map('DELETE', '/users/user/[:userId]/logout', function ($userId) {
+            $pagePosts = new Ctrl\User(self::$logger, self::$settings);
+            $pagePosts->logout($userId);
+        }, 'logout');
     }
 
     public static function routesComments()

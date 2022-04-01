@@ -15,7 +15,12 @@ class Session
         if($_SESSION[$key]){
             return $_SESSION[$key];
         }
-
         return false;
+    }
+
+    public function unsetSession()
+    {
+        $this->setSession('role','');
+        $this->setSession('connected', false);
     }
 }

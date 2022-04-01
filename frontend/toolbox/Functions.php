@@ -31,6 +31,17 @@ class Functions
         return ($content);
     }
 
+    public function updatePost($postId, $form)
+    {
+        $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/$postId/update";
+        $form['token'] =  $this->session->getSession('token');
+
+        $form = json_encode($form);
+        $this->curl($url, $form, 'PUT');
+
+        header("location: ?page=updatepost&postid=$postId");
+    }
+
     public function login($form)
     {
         $form = json_encode($form);
@@ -57,6 +68,18 @@ class Functions
         $this->curlForm($url, $form);
 
         header('location: ?page=login');
+    }
+
+    public function logout()
+    {
+
+        $userId = $this->session->getSession('iduser');
+
+        $url = "http://localhost/bloglauralazzaro/webservices/api/v1/users/user/$userId/logout";
+
+        $this->curl($url, [], 'DELETE');
+
+        header('location: ?page=home');
     }
 
     public function getCommentsForPost($postId)

@@ -55,6 +55,9 @@ class User extends Base
         $dbArray = $this->modelUser->selectUser($user);
 
         $token = $this->genererateToken($dbArray);
+
+        $this->modelUser->createTokenLogin($dbArray['id'], $token);
+
         $dbArray['token'] = $token;
 
         echo json_encode($dbArray);
@@ -72,4 +75,34 @@ class User extends Base
 
         return true;
     }
+
+    /**
+     * @param $userId
+     * @return bool
+     * @throws \Exception
+     */
+    public function logout($userId)
+    {
+        $this->logger->info('logout');
+
+        $this->modelUser->deleteTokenLogin($userId);
+
+        return true;
+    }
+
+    /**
+     * @param $token
+     * @return array
+     * @throws \Exception
+     */
+    public function getUserFromToken($token)
+    {
+        $this->logger->info('verify token');
+
+        $user = $this->modelUser->getUserFromToken($token);
+
+        return $user;
+    }
+
+
 }

@@ -4,7 +4,7 @@ namespace LL\WS\classes;
 
 final class User
 {
-    private int $id;
+    private int $userId;
     private string $email;
     private string $password;
     private string $username;
@@ -14,15 +14,15 @@ final class User
      */
     public function getId(): int
     {
-        return $this->id;
+        return $this->userId;
     }
 
     /**
-     * @param int $id
+     * @param int $userId
      */
-    public function setId(int $id): void
+    public function setId(int $userId): void
     {
-        $this->id = $id;
+        $this->userId = $userId;
     }
 
     /**
