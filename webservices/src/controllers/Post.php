@@ -39,7 +39,7 @@ class Post extends Base
 
         $post->setIdAuthor($body->userid);
         $post->setTitle($body->title);
-        $post->setLead($body->leadpst);
+        $post->setTeaser($body->teaser);
         $post->setContent($body->content);
 
         $idNewPost = $this->modelPost->insertPost($post);

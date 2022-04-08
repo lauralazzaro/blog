@@ -17,7 +17,7 @@ final class Post
     /**
      * @var string
      */
-    private string $lead;
+    private string $teaser;
 
     /**
      * @var string
@@ -69,17 +69,17 @@ final class Post
     /**
      * @return string
      */
-    public function getLead(): string
+    public function getTeaser(): string
     {
-        return $this->lead;
+        return $this->teaser;
     }
 
     /**
-     * @param string $lead
+     * @param string $teaser
      */
-    public function setLead(string $lead): void
+    public function setTeaser(string $teaser): void
     {
-        $this->lead = $lead;
+        $this->teaser = $teaser;
     }
 
     /**

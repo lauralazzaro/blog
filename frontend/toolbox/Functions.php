@@ -156,6 +156,19 @@ class Functions
         header('location: ?page=posts');
     }
 
+    public function createPost($form)
+    {
+        $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post";
+        $form['token'] = $this->session->getSession('token');
+
+        $body = json_encode($form);
+
+        $this->curlForm($url, $body, 'POST');
+
+        header('location: ?page=posts');
+    }
+
+
     private function curlForm($url, $body, $method)
     {
         $curl = curl_init();

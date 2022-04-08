@@ -79,6 +79,11 @@ class Renderer
         echo $this->twig->render('signup.twig');
     }
 
+    public function createPost()
+    {
+        echo $this->twig->render('createpost.twig');
+    }
+
     public function adminPage()
     {
         if ($this->role !== 'admin') {

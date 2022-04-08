@@ -77,6 +77,15 @@ switch ($query_array['page']) {
         $form = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $function->updatePost($postId, $form);
         break;
+    case 'createpost':
+        $twigRenderer->createPost();
+        break;
+    case 'sendcreatepost':
+
+        $form = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $function->createPost($form);
+        header('location: ?page=posts');
+        break;
     default:
         echo('page not found');
 }

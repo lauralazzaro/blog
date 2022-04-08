@@ -15,6 +15,7 @@ class Post extends Base
         FROM posts
         INNER JOIN users user on posts.users_id = user.id
         WHERE deleted_at IS NULL
+        order by posts.id DESC
 SQL;
 
     const SELECT_ONE_POST = <<< SQL
@@ -120,7 +121,7 @@ SQL;
 
         $sql->bindValue(':userid', $post->getIdAuthor());
         $sql->bindValue(':title', $post->getTitle());
-        $sql->bindValue(':leadpst', $post->getLead());
+        $sql->bindValue(':teaser', $post->getTeaser());
         $sql->bindValue(':content', $post->getContent());
 
         $sql->execute();
