@@ -31,6 +31,7 @@ SQL;
         SELECT comments.id,
                comments.content,
                comments.updated_at,
+               comments.created_at,
                user.username,
                post.title 
         FROM comments
@@ -39,6 +40,7 @@ SQL;
         WHERE comments.approved = 0
         AND
               comments.deleted_at is null
+        order by comments.created_at DESC
 SQL;
 
     const REFUSE_COMMENT = <<< SQL

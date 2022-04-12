@@ -2,13 +2,18 @@
 
 namespace Toolbox;
 
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+
 class Functions
 {
     private Session $session;
+    private array $settings;
 
-    public function __construct()
+    public function __construct($settings)
     {
         $this->session = new Session();
+        $this->settings = $settings;
     }
 
     public function getPosts()
@@ -139,9 +144,10 @@ class Functions
 
         $url = "http://localhost/bloglauralazzaro/webservices/api/v1/posts/post/$postId/comments";
 
-        $this->curlForm($url, $comment, 'POST');
-
-        header("location: ?page=post&postid=$postId");
+        if ($this->curlForm($url, $comment, 'POST') === null) {
+            return 'failed';
+        }
+        return 'success';
     }
 
     public function deletePost($postId)
@@ -154,6 +160,38 @@ class Functions
         $this->curl($url, $body, 'DELETE');
 
         header('location: ?page=posts');
+    }
+
+    public function sendEmail($form)
+    {
+        //Create an instance; passing `true` enables exceptions
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->Host = $this->settings['email']['host'];
+            $mail->SMTPAuth = true;
+            $mail->Username = $this->settings['email']['username'];
+            $mail->Password = $this->settings['email']['password'];
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = $this->settings['email']['port'];
+
+            //Recipients
+            $mail->setFrom($this->settings['email']['username'], 'Blog Laura Lazzaro');
+            $mail->addAddress($form['email']);               //Name is optional
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = "Contact form from laura lazzaro's blog";
+            $mail->Body = $form['name'] . ' sent this message: <br>' . $form['message'];
+
+            $mail->send();
+
+            $res = 'success';
+        } catch (Exception $e) {
+            $res = 'failed';
+        }
+        return $res;
     }
 
     public function createPost($form)

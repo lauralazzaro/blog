@@ -1,6 +1,47 @@
 {%  extends 'layout.twig' %}
 
 {% block content %}
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 center">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 mb-3">
+                <a href="../frontend/assets/cv-laura-lazzaro.pdf" class="btn btn-outline-success" download>Download my CV</a>
+            </div>
+        </div>
+<hr>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7 mb-3">
 
+                {% if emailSent is same as('success') %}
+                <div class="alert alert-success" role="alert">
+                    <small> Email sent </small>
+                </div>
+                {% elseif emailSent is same as('failed') %}
+                <div class="alert alert-danger" role="alert">
+                    <small> Email error </small>
+                </div>
+                {% endif %}
+
+                <!-- Main Content-->
+                <h1 class="mb-5">Contact</h1>
+                <form action="?page=contact" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label" >Email</label>
+                        <input type="text" class="form-control" name="email" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message">Message</label>
+                        <textarea placeholder="Type here your message" class="form-control" id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
 
 {% endblock %}

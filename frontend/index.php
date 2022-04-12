@@ -13,21 +13,22 @@ if (!isset($query_array['page'])) {
     $query_array['page'] = '';
 }
 
-$twigRenderer = new Renderer();
-$function = new Functions();
+$setting = require_once '../_settings/settings.php';
+$twigRenderer = new Renderer($setting);
+$function = new Functions($setting);
 $session = new Session();
 
 switch ($query_array['page']) {
     case '':
     case 'home':
-        $twigRenderer->home();
+        $twigRenderer->home('');
         break;
     case 'posts':
         $twigRenderer->posts();
         break;
     case 'post':
         $postId = $query_array['postid'];
-        $twigRenderer->post($postId);
+        $twigRenderer->post($postId, '');
         break;
     case 'login':
         $twigRenderer->login();
@@ -62,7 +63,8 @@ switch ($query_array['page']) {
         break;
     case 'addcomment':
         $comment = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $function->addComment($comment);
+        $resCommentSent = $function->addComment($comment);
+        $twigRenderer->post($comment['postid'], $resCommentSent);
         break;
     case 'deletepost':
         $postId = $query_array['postid'];
@@ -81,10 +83,14 @@ switch ($query_array['page']) {
         $twigRenderer->createPost();
         break;
     case 'sendcreatepost':
-
         $form = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $function->createPost($form);
-        header('location: ?page=posts');
+        $twigRenderer->posts();
+        break;
+    case 'contact':
+        $form = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $resSendEmail = $function->sendEmail($form);
+        $twigRenderer->home($resSendEmail);
         break;
     default:
         echo('page not found');

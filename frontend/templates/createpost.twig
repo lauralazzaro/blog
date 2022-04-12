@@ -10,15 +10,15 @@
                         <input type="hidden" class="form-control" name="userid" id="userid" value="{{ session.iduser }}">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" name="title" id="title" value="{{ post.title }}">
+                            <input type="text" class="form-control" name="title" id="title" value="{{ post.title }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="teaser" class="form-label">Teaser</label>
-                            <input type="text" class="form-control" name="teaser" id="teaser" value="{{ post.teaser }}">
+                            <input type="text" class="form-control" name="teaser" id="teaser" value="{{ post.teaser }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="content">Content</label>
-                            <textarea class="form-control" id="content" name="content" rows="6">{{ post.content }}</textarea>
+                            <textarea class="form-control" id="content" name="content" rows="6" required>{{ post.content }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Create Post</button>
                     </form>

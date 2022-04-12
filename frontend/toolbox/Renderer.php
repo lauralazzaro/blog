@@ -11,9 +11,10 @@ class Renderer
     private Environment $twig;
     private Functions $functions;
     private Session $session;
+    private array $settings;
     private string $role;
 
-    public function __construct()
+    public function __construct($settings)
     {
         $loader = new FilesystemLoader('./templates');
         $this->twig = new Environment($loader, [
@@ -23,18 +24,20 @@ class Renderer
 
         $this->twig->addGlobal('session', $_SESSION);
 
+        $this->settings = $settings;
         $this->session = new Session();
-        $this->functions = new Functions();
+        $this->functions = new Functions($this->settings);
         $this->checkRole();
     }
 
-    public function home()
+    public function home($resSendEmail)
     {
         echo $this->twig->render('index.twig',
             [
                 'title' => 'Laura Lazzaro',
                 'teaser' => 'Super php developer',
-                'role' => $this->role
+                'role' => $this->role,
+                'emailSent' => $resSendEmail
             ]);
     }
 
@@ -44,7 +47,7 @@ class Renderer
         echo $this->twig->render('posts.twig', ['posts' => $posts, 'role' => $this->role]);
     }
 
-    public function post($postid)
+    public function post($postid, $commentSent)
     {
         $post = $this->functions->getOnePost($postid);
         $comments = $this->functions->getCommentsForPost($postid);
@@ -54,12 +57,17 @@ class Renderer
                 'post' => $post,
                 'comments' => $comments,
                 'role' => $this->role,
-                'connected' => $this->session->getSession('connected')
+                'connected' => $this->session->getSession('connected'),
+                'commentSent' => $commentSent
             ]);
     }
 
     public function updatePost($postid)
     {
+        if ($this->role !== 'admin') {
+            header('location: ?page=home');
+        }
+
         $post = $this->functions->getOnePost($postid);
 
         echo $this->twig->render('updatepost.twig',
@@ -81,6 +89,9 @@ class Renderer
 
     public function createPost()
     {
+        if ($this->role !== 'admin') {
+            header('location: ?page=home');
+        }
         echo $this->twig->render('createpost.twig');
     }
 

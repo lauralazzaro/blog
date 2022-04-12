@@ -16,7 +16,7 @@
                                 <a href="?page=approvecomment&commentid={{ comment.id }}"
                                    class="btn btn-success btn-sm rounded" role="button">Approve</a>
                                 <a href="?page=deletecomment&commentid={{ comment.id }}"
-                                   class="btn btn-danger btn-sm rounded">Delete</a>
+                                   class="btn btn-danger btn-sm rounded" onclick="return confirm('Do you really want to delete this comment?');">Delete</a>
                             </div>
 
                         </li>
