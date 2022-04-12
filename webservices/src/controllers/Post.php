@@ -29,15 +29,17 @@ class Post extends Base
 
         $body = $this->getBodyRequest();
 
-        $userId = $this->validateToken($body->token);
+        $user = $this->ctrlUser->getUserFromToken($body->token);
 
-        $this->ctrlUser->isAdmin($userId);
+        if($user['role'] !== 'admin'){
+            throw new \Exception('403.Access Forbidden');
+        }
 
         $post = new cls\Post();
 
         $post->setIdAuthor($body->userid);
         $post->setTitle($body->title);
-        $post->setLead($body->leadpst);
+        $post->setTeaser($body->teaser);
         $post->setContent($body->content);
 
         $idNewPost = $this->modelPost->insertPost($post);
@@ -80,9 +82,11 @@ class Post extends Base
 
         $arrPost = $this->getBodyRequest(true);
 
-        $userId = $this->validateToken($arrPost['token']);
+        $user = $this->ctrlUser->getUserFromToken($arrPost['token']);
 
-        $this->ctrlUser->isAdmin($userId);
+        if($user['role'] !== 'admin'){
+            throw new \Exception('403.Access Forbidden');
+        }
 
         $arrPost['idpost'] = $idPost;
 
@@ -99,9 +103,11 @@ class Post extends Base
 
         $body = $this->getBodyRequest();
 
-        $userId = $this->validateToken($body->token);
+        $user = $this->ctrlUser->getUserFromToken($body->token);
 
-        $this->ctrlUser->isAdmin($userId);
+        if($user['role'] !== 'admin'){
+            throw new \Exception('403.Access Forbidden');
+        }
 
         $this->modelPost->deleteOnePost($idPost);
 

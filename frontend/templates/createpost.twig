@@ -1,0 +1,30 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <div class="container position-relative ">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7 mb-5">
+                <div class="post-heading">
+                    <h1 class="mb-3">Create new post</h1>
+                    <form action="?page=sendcreatepost" method="post">
+                        <input type="hidden" class="form-control" name="userid" id="userid" value="{{ session.iduser }}">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" id="title" value="{{ post.title }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="teaser" class="form-label">Teaser</label>
+                            <input type="text" class="form-control" name="teaser" id="teaser" value="{{ post.teaser }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content">Content</label>
+                            <textarea class="form-control" id="content" name="content" rows="6" required>{{ post.content }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

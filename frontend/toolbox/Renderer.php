@@ -10,9 +10,11 @@ class Renderer
 {
     private Environment $twig;
     private Functions $functions;
+    private Session $session;
+    private array $settings;
     private string $role;
 
-    public function __construct()
+    public function __construct($settings)
     {
         $loader = new FilesystemLoader('./templates');
         $this->twig = new Environment($loader, [
@@ -22,39 +24,75 @@ class Renderer
 
         $this->twig->addGlobal('session', $_SESSION);
 
-        $this->functions = new Functions();
+        $this->settings = $settings;
+        $this->session = new Session();
+        $this->functions = new Functions($this->settings);
         $this->checkRole();
     }
 
-    public function home()
+    public function home($resSendEmail)
     {
-        echo $this->twig->render('index.twig', ['title' => 'Laura Lazzaro', 'teaser' => 'Super php developer', 'role' => $this->role]);
+        echo $this->twig->render('index.twig',
+            [
+                'title' => 'Laura Lazzaro',
+                'teaser' => 'Super php developer',
+                'role' => $this->role,
+                'emailSent' => $resSendEmail
+            ]);
     }
 
     public function posts()
     {
         $posts = $this->functions->getPosts();
-
         echo $this->twig->render('posts.twig', ['posts' => $posts, 'role' => $this->role]);
     }
 
-    public function post($postid)
+    public function post($postid, $commentSent)
     {
         $post = $this->functions->getOnePost($postid);
         $comments = $this->functions->getCommentsForPost($postid);
 
-        echo $this->twig->render('post.twig', ['post' => $post, 'comments' => $comments, 'role' => $this->role]);
+        echo $this->twig->render('post.twig',
+            [
+                'post' => $post,
+                'comments' => $comments,
+                'role' => $this->role,
+                'connected' => $this->session->getSession('connected'),
+                'commentSent' => $commentSent
+            ]);
+    }
+
+    public function updatePost($postid)
+    {
+        if ($this->role !== 'admin') {
+            header('location: ?page=home');
+        }
+
+        $post = $this->functions->getOnePost($postid);
+
+        echo $this->twig->render('updatepost.twig',
+            [
+                'post' => $post,
+                'role' => $this->role
+            ]);
     }
 
     public function login()
     {
-
         echo $this->twig->render('login.twig');
     }
 
     public function signup()
     {
         echo $this->twig->render('signup.twig');
+    }
+
+    public function createPost()
+    {
+        if ($this->role !== 'admin') {
+            header('location: ?page=home');
+        }
+        echo $this->twig->render('createpost.twig');
     }
 
     public function adminPage()
@@ -64,15 +102,18 @@ class Renderer
         }
 
         $comments = $this->functions->getCommentsToApprove();
-        echo $this->twig->render('adminpage.twig', ['comments' => $comments, 'role' => $this->role]);
+        echo $this->twig->render('adminpage.twig',
+            [
+                'comments' => $comments,
+                'role' => $this->role
+            ]);
     }
 
     private function checkRole()
     {
         $this->role = '';
-
-        if (isset($_SESSION['role'])) {
-            $this->role = filter_var($_SESSION['role']);
+        if($this->session->getSession('role')) {
+            $this->role = $this->session->getSession('role');
         }
     }
 }

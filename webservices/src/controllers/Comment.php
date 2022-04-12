@@ -27,7 +27,7 @@ class Comment extends Base
 
         $body = $this->getBodyRequest();
 
-        $this->validateToken($body->token);
+        $this->ctrlUser->getUserFromToken($body->token);
 
         $comment = new cls\Comment();
         $comment->setPostId($postId);
@@ -50,9 +50,11 @@ class Comment extends Base
 
         $body = $this->getBodyRequest();
 
-        $userId = $this->validateToken($body->token);
+        $user = $this->ctrlUser->getUserFromToken($body->token);
 
-        $this->ctrlUser->isAdmin($userId);
+        if($user['role'] !== 'admin'){
+            throw new \Exception('403.Access Forbidden');
+        }
 
         $this->modelComment->approveComment($commentId);
 
@@ -82,9 +84,11 @@ class Comment extends Base
         $this->logger->info('select comments to approve');
         $body = $this->getBodyRequest();
 
-        $userId = $this->validateToken($body->token);
+        $user = $this->ctrlUser->getUserFromToken($body->token);
 
-        $this->ctrlUser->isAdmin($userId);
+        if($user['role'] !== 'admin'){
+            throw new \Exception('403.Access Forbidden');
+        }
 
         $dbArray = $this->modelComment->selectCommentsToApprove();
 
@@ -102,9 +106,11 @@ class Comment extends Base
 
         $body = $this->getBodyRequest();
 
-        $userId = $this->validateToken($body->token);
+        $user = $this->ctrlUser->getUserFromToken($body->token);
 
-        $this->ctrlUser->isAdmin($userId);
+        if($user['role'] !== 'admin'){
+            throw new \Exception('403.Access Forbidden');
+        }
 
         $dbArray = $this->modelComment->refuseComment($commentId);
 

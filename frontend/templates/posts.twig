@@ -17,13 +17,18 @@
                     <p class="post-meta">
                         Posted by {{ post.username }} on {{ post.updated_at  | date('d/m/Y')}}
                     </p>
+                    {% if role == 'admin' %}
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="?page=updatepost&postid={{ post.id }}"
+                           class="btn btn-success btn-sm rounded" role="button">Update</a>
+                        <a href="?page=deletepost&postid={{ post.id }}"
+                           class="btn btn-danger btn-sm rounded" onclick="return confirm('Do you really want to delete this post?');">Delete</a>
+                    </div>
+                    {% endif %}
                 </div>
                 <!-- Divider-->
                 <hr class="my-4"/>
             {% endfor %}
-            <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts
-                    →</a></div>
         </div>
     </div>
 

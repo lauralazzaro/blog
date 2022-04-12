@@ -32,17 +32,32 @@
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
 
+                {% if commentSent is same as('success') %}
+                    <div class="alert alert-success" role="alert">
+                        <small> Your comment has been sent and is waiting for approval </small>
+                    </div>
+                {% elseif commentSent is same as('failed') %}
+                    <div class="alert alert-danger" role="alert">
+                        <small> our comment has not been sent </small>
+                    </div>
+                {% endif %}
+
+                {% if connected == true %}
                 <form action="?page=addcomment" method="post" class="mb-5">
                     <div class="mb-3">
                         <label for="content" class="form-label">Add a comment:</label>
-                        <input type="text" class="form-control" name="content" id="content" aria-describedby="">
+                        <input type="text" class="form-control" name="content" id="content" required>
                     </div>
                     <input type="hidden" class="form-control" name="userid" id="userid" value="{{ session.iduser }}">
                     <input type="hidden" class="form-control" name="postid" id="postid" value="{{ post.id }}">
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        <small> You must be connected to comment </small>
+                    </div>
+                {% endif %}
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-2"> Comments: </h5>
                 </div>
