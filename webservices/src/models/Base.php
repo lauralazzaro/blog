@@ -15,10 +15,16 @@ abstract class Base
         $this->dbConnection = $this->dbConnection();
     }
 
-    protected function dbConnection(): \PDO
+    private function dbConnection(): \PDO
     {
-        $database = new Db();
+        $config = include realpath('../_settings/settings.php');
 
-        return $database->connection();
+        $dbhost = $config['db']['dbhost'];
+        $dbport = $config['db']['dbport'];
+        $dbname = $config['db']['dbname'];
+        $dbuser = $config['db']['dbuser'];
+        $dbpassword = $config['db']['dbpassword'];
+
+        return new \PDO("mysql:host=$dbhost;dbname=$dbname;charset=utf8;port=$dbport", $dbuser, $dbpassword, []);
     }
 }

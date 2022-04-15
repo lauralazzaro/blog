@@ -63,19 +63,6 @@ class User extends Base
         echo json_encode($dbArray);
     }
 
-    public function isAdmin($userId)
-    {
-        $this->logger->info('check if admin');
-
-        $role = $this->modelUser->selectUserById($userId);
-
-        if($role['role'] === 'user'){
-            throw new \Exception('403.User not authorized');
-        }
-
-        return true;
-    }
-
     /**
      * @param $userId
      * @return bool

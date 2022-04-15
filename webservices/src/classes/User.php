@@ -8,11 +8,13 @@ final class User
     private string $email;
     private string $password;
     private string $username;
+    private string $role;
+    private string $token;
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -20,7 +22,7 @@ final class User
     /**
      * @param int $userId
      */
-    public function setId(int $userId): void
+    public function setUserId(int $userId): void
     {
         $this->userId = $userId;
     }
@@ -73,7 +75,36 @@ final class User
         $this->username = $username;
     }
 
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
 
+    /**
+     * @param string $role
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
 
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken(string $token): void
+    {
+        $this->token = $token;
+    }
 
 }

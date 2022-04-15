@@ -14,6 +14,7 @@ class Comment extends Base
         WHERE comments.approved = 1 
         AND
               comments.posts_id = :postid
+        ORDER BY comments.updated_at DESC
 SQL;
 
     const APPROVE_COMMENT = <<< SQL
