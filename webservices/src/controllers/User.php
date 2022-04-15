@@ -54,13 +54,15 @@ class User extends Base
 
         $dbArray = $this->modelUser->selectUser($user);
 
-        $token = $this->genererateToken($dbArray);
+        if($dbArray) {
+            $token = $this->genererateToken($dbArray);
 
-        $this->modelUser->createTokenLogin($dbArray['id'], $token);
+            $this->modelUser->createTokenLogin($dbArray['id'], $token);
 
-        $dbArray['token'] = $token;
+            $dbArray['token'] = $token;
 
-        echo json_encode($dbArray);
+            echo json_encode($dbArray);
+        }
     }
 
     /**

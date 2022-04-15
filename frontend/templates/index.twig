@@ -24,6 +24,12 @@
                 </div>
                 {% endif %}
 
+                {% if forbidden is same as('true') %}
+                    <div class="alert alert-danger" role="alert">
+                        <small> You don't have the right to access that page </small>
+                    </div>
+                {% endif %}
+
                 <!-- Main Content-->
                 <h1 class="mb-5">Contact</h1>
                 <form action="?page=contact" method="post">

@@ -5,6 +5,13 @@
     <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7 mb-3">
+
+            {% if loginresult is same as('loginfail') %}
+                <div class="alert alert-danger" role="alert">
+                    <small> Failed to login  </small>
+                </div>
+            {% endif %}
+
             <!-- Main Content-->
             <h1 class="mb-5">Login</h1>
             <form action="?page=sendlogin" method="post">

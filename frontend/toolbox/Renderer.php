@@ -30,14 +30,15 @@ class Renderer
         $this->checkRole();
     }
 
-    public function home($resSendEmail)
+    public function home($resSendEmail = '', $forbidden = '')
     {
         echo $this->twig->render('index.twig',
             [
                 'title' => 'Laura Lazzaro',
                 'teaser' => 'Super php developer',
                 'role' => $this->role,
-                'emailSent' => $resSendEmail
+                'emailSent' => $resSendEmail,
+                'forbidden' => $forbidden
             ]);
     }
 
@@ -47,7 +48,7 @@ class Renderer
         echo $this->twig->render('posts.twig', ['posts' => $posts, 'role' => $this->role]);
     }
 
-    public function post($postid, $commentSent)
+    public function post($postid, $commentSent = '')
     {
         $post = $this->functions->getOnePost($postid);
         $comments = $this->functions->getCommentsForPost($postid);
@@ -64,10 +65,6 @@ class Renderer
 
     public function updatePost($postid)
     {
-        if ($this->role !== 'admin') {
-            header('location: ?page=home');
-        }
-
         $post = $this->functions->getOnePost($postid);
 
         echo $this->twig->render('updatepost.twig',
@@ -77,9 +74,11 @@ class Renderer
             ]);
     }
 
-    public function login()
+    public function login($res = '')
     {
-        echo $this->twig->render('login.twig');
+        echo $this->twig->render('login.twig', [
+            'loginresult' => $res
+        ]);
     }
 
     public function signup()
@@ -89,18 +88,11 @@ class Renderer
 
     public function createPost()
     {
-        if ($this->role !== 'admin') {
-            header('location: ?page=home');
-        }
         echo $this->twig->render('createpost.twig');
     }
 
     public function adminPage()
     {
-        if ($this->role !== 'admin') {
-            header('location: ?page=home');
-        }
-
         $comments = $this->functions->getCommentsToApprove();
         echo $this->twig->render('adminpage.twig',
             [

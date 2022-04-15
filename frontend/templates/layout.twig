@@ -31,7 +31,7 @@
             <ul class="navbar-nav ms-auto py-4 py-lg-0">
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="?page=home">Home</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="?page=posts">Posts</a></li>
-                {% if session.connected == true %}
+                {% if session.connected is same as(true) %}
                     {% if role == 'admin' %}
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="?page=createpost">Create Post</a>
                         </li>
