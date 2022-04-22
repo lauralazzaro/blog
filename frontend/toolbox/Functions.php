@@ -175,10 +175,11 @@ class Functions
 
             //Recipients
             $mail->setFrom($this->settings['email']['username'], 'Blog Laura Lazzaro');
-            $mail->addAddress($form['email']);               //Name is optional
+            $mail->addReplyTo($form['email']);
+            $mail->addAddress($this->settings['email']['username']);
 
             //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->isHTML(true);
             $mail->Subject = "Contact form from laura lazzaro's blog";
             $mail->Body = $form['name'] . ' sent this message: <br>' . $form['message'];
 
