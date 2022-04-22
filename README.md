@@ -1,6 +1,7 @@
-# Project #5 OpenClassRooms - Php Symfony Develover 
-
+# Project #5 OpenClassRooms - Php Symfony Develover
 ## Build a personal blog in PHP
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/9871011e640147deb9c91dbfca17b4a4)](https://www.codacy.com/gh/lauralazzaro/bloglauralazzaro/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lauralazzaro/bloglauralazzaro&amp;utm_campaign=Badge_Grade)
 
 ## Installation
 
@@ -8,6 +9,7 @@
 >git clone https://github.com/lauralazzaro/bloglauralazzaro.git
 
 ## Composer
+In the frontend folder and webservices folder run:
 >composer install
 
 ## Database
