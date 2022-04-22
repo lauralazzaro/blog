@@ -35,6 +35,18 @@ final class Post
     private \DateTime $createdAt;
 
     /**
+     * @var \DateTime
+     */
+    private \DateTime $updatedAt;
+
+    /**
+     * @var \DateTime
+     */
+    private \DateTime $deletedAt;
+
+
+
+    /**
      * @return int
      */
     public function getIdPost(): int
@@ -129,6 +141,40 @@ final class Post
     {
         $this->createdAt = $createdAt;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeletedAt(): \DateTime
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param \DateTime $deletedAt
+     */
+    public function setDeletedAt(\DateTime $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
+
 
 
 }

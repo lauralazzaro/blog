@@ -44,8 +44,6 @@ class Functions
 
         $body = json_encode($form);
         $this->curlForm($url, $body, 'PUT');
-
-        header("location: ?page=updatepost&postid=$postId");
     }
 
     public function login($form)
@@ -56,12 +54,17 @@ class Functions
 
         $content = $this->curlForm($url, $form, 'POST');
 
-        $this->session->setSession('role', $content['role']);
-        $this->session->setSession('iduser', $content['id']);
-        $this->session->setSession('token', $content['token']);
-        $this->session->setSession('connected', true);
+        if($content){
+            $this->session->setSession('role', $content['role']);
+            $this->session->setSession('iduser', $content['id']);
+            $this->session->setSession('username', $content['username']);
+            $this->session->setSession('token', $content['token']);
+            $this->session->setSession('connected', true);
 
-        header('location: ?page=home');
+            header('location: ?page=home');
+        }
+
+        return 'loginfail';
     }
 
     public function signup($form)
@@ -72,8 +75,6 @@ class Functions
         $url = 'http://localhost/bloglauralazzaro/webservices/api/v1/users/signup';
 
         $this->curlForm($url, $form, 'POST');
-
-        header('location: ?page=login');
     }
 
     public function logout()
@@ -118,8 +119,6 @@ class Functions
         ];
 
         $this->curl($url, $body, 'PUT');
-
-        header('location: ?page=adminpage');
     }
 
     public function deleteComment($commentId)
@@ -130,8 +129,6 @@ class Functions
         ];
 
         $this->curl($url, $body, 'DELETE');
-
-        header('location: ?page=adminpage');
     }
 
     public function addComment($comment)

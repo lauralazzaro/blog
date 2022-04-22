@@ -11,8 +11,10 @@ class Comment
     private string $createdAt;
     private string $updatedAt;
     private bool $approved;
+    private string $deleted_at;
 
     /**
+     *
      * @return int
      */
     public function getCommentId(): int
@@ -124,6 +126,23 @@ class Comment
     {
         $this->approved = $approved;
     }
+
+    /**
+     * @return string
+     */
+    public function getDeletedAt(): string
+    {
+        return $this->deleted_at;
+    }
+
+    /**
+     * @param string $deleted_at
+     */
+    public function setDeletedAt(string $deleted_at): void
+    {
+        $this->deleted_at = $deleted_at;
+    }
+
 
 
 }
